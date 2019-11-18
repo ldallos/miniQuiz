@@ -8,7 +8,7 @@ namespace miniQuizLight.Model
         {
             Message = string.Empty;
             Reward = 0;
-            Questions = new List<string>();
+            Questions = new List<Question>();
             X = 0;
             Y = 0;
         }
@@ -21,6 +21,6 @@ namespace miniQuizLight.Model
 
         public int Reward { get; set; }
 
-        public List<string> Questions { get; }
+        public List<Question> Questions { get; }
     }
 }

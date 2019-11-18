@@ -1,0 +1,22 @@
+﻿<Window x:Class="miniQuizLight.View.QuestionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:local="clr-namespace:miniQuizLight.View"
+        mc:Ignorable="d" WindowStyle="ToolWindow"  WindowStartupLocation="CenterScreen"
+        Title="QuestionWindow" Height="150" Width="300">
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="{Binding Path=QuestionText}" />
+        <TextBox Text="{Binding Path=AnswerSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TextChanged">
+                    <i:InvokeCommandAction Command="{Binding Path=AnswerSearchCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </TextBox>
+        <ComboBox ItemsSource="{Binding Path=Answers}" SelectedItem="{Binding Path=SelectedAnswer}" />
+        <Button Content="Ok" Width="100" Margin="5, 15, 5, 5" HorizontalAlignment="Left" Click="OkButtonClick"></Button>
+    </StackPanel>
+</Window>

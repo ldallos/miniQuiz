@@ -3,16 +3,18 @@ using System.Windows.Input;
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using miniQuizLight.Interfaces;
 using miniQuizLight.Model;
 
 namespace miniQuizLight.ViewModel
 {
     public class FieldViewModel : ViewModelBase
     {
-        public FieldViewModel(Field field)
+        public FieldViewModel(Field field, IQuestionViewHandler questionViewHandler)
         {
             CanShow = false;
             myField = field;
+            myquestionViewHandler = questionViewHandler;
             ShowMessageCommand = new RelayCommand(ShowMessage);
         }
 
@@ -52,10 +54,35 @@ namespace miniQuizLight.ViewModel
 
         private Field myField;
 
+        private IQuestionViewHandler myquestionViewHandler;
+
         private void ShowMessage()
         {
-            CanShow = true;
-            RaisePropertyChanged("Message");
+            if (myField.Questions.Count > 0)
+            {
+                bool success = true;
+                foreach (Question question in myField.Questions)
+                {
+                    QuestionViewModel questionViewModel = new QuestionViewModel(question);
+                    myquestionViewHandler.Show(questionViewModel);
+                    if (question.GoodAnswer != questionViewModel.SelectedAnswer)
+                    {
+                        success = false;
+                        break;
+                    }
+                }
+
+                if (success)
+                {
+                    CanShow = true;
+                    RaisePropertyChanged("Message");
+                }
+            }
+            else
+            {
+                CanShow = true;
+                RaisePropertyChanged("Message");
+            }
         }
     }
 }
