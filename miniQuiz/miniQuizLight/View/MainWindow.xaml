@@ -7,7 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ItemsControl ItemsSource="{Binding Path=Fields}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <ItemsControl Grid.Column="0" ItemsSource="{Binding Path=Fields}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>
@@ -45,5 +49,25 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <Grid Grid.Column="1" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="Kiválasztott mező:" />
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <TextBlock Text="X: " />
+                <TextBlock Text="{Binding Path=SelectedField.X}" />
+            </StackPanel>
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBlock Text="Y: " />
+                <TextBlock Text="{Binding Path=SelectedField.Y}" />
+            </StackPanel>
+            <Button Grid.Row="3" Content="Újrakezd" 
+                    IsEnabled="{Binding Path=SelectedField.CanShow}" 
+                    Command="{Binding SelectedField.RetryCommand}" />
+        </Grid>
     </Grid>
 </Window>

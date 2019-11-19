@@ -1,10 +1,11 @@
 ﻿using System.Collections.ObjectModel;
+using GalaSoft.MvvmLight;
 using miniQuizLight.Interfaces;
 using miniQuizLight.Model;
 
 namespace miniQuizLight.ViewModel
 {
-    public class MainViewModel
+    public class MainViewModel : ViewModelBase
     {
         public MainViewModel(IQuestionViewHandler questionViewHandler)
         {
@@ -27,16 +28,16 @@ namespace miniQuizLight.ViewModel
             f00.Questions[0].Answers.AddRange(new string[] { "Aladár", "Béla", "Géza" });
             f00.Questions[1].Answers.AddRange(new string[] { "1", "100", "23", "99" });
 
-            Fields.Add(new FieldViewModel(f00, questionViewHandler));
+            Fields.Add(new FieldViewModel(f00, this, questionViewHandler));
 
-            Fields.Add(new FieldViewModel(new Field { X = 0, Y = 1 }, questionViewHandler));
-            Fields.Add(new FieldViewModel(new Field { X = 0, Y = 2 }, questionViewHandler));
-            Fields.Add(new FieldViewModel(new Field { X = 0, Y = 3 }, questionViewHandler));
+            Fields.Add(new FieldViewModel(new Field { X = 0, Y = 1 }, this, questionViewHandler));
+            Fields.Add(new FieldViewModel(new Field { X = 0, Y = 2 }, this, questionViewHandler));
+            Fields.Add(new FieldViewModel(new Field { X = 0, Y = 3 }, this, questionViewHandler));
 
-            Fields.Add(new FieldViewModel(new Field { X = 1, Y = 0 }, questionViewHandler));
-            Fields.Add(new FieldViewModel(new Field { X = 1, Y = 1, Reward = 100, Message = "Nyeremény" }, questionViewHandler));
-            Fields.Add(new FieldViewModel(new Field { X = 1, Y = 2, Reward = 200, Message = "Nyeremény" }, questionViewHandler));
-            Fields.Add(new FieldViewModel(new Field { X = 1, Y = 3 }, questionViewHandler));
+            Fields.Add(new FieldViewModel(new Field { X = 1, Y = 0 }, this, questionViewHandler));
+            Fields.Add(new FieldViewModel(new Field { X = 1, Y = 1, Reward = 100, Message = "Nyeremény" }, this, questionViewHandler));
+            Fields.Add(new FieldViewModel(new Field { X = 1, Y = 2, Reward = 200, Message = "Nyeremény" }, this, questionViewHandler));
+            Fields.Add(new FieldViewModel(new Field { X = 1, Y = 3 }, this, questionViewHandler));
 
             Field f20 = new Field
             {
@@ -47,9 +48,9 @@ namespace miniQuizLight.ViewModel
             };
             f20.Questions.Add(new Question { QuestionText = "Mi legyen a kérdés?", GoodAnswer = "Nem tudom..." });
             f20.Questions[0].Answers.AddRange(new string[] { "Kettőt könnyebbet.", "Nem tudom...", "Mit tudom én?" });
-            Fields.Add(new FieldViewModel(f20, questionViewHandler));
+            Fields.Add(new FieldViewModel(f20, this, questionViewHandler));
 
-            Fields.Add(new FieldViewModel(new Field { X = 2, Y = 1 }, questionViewHandler));
+            Fields.Add(new FieldViewModel(new Field { X = 2, Y = 1 }, this, questionViewHandler));
 
             Field f22 = new Field
             {
@@ -65,13 +66,27 @@ namespace miniQuizLight.ViewModel
             });
             f22.Questions[0].Answers.AddRange(new string[] { "barna", "kék", "kék" });
             f22.Questions[1].Answers.AddRange(new string[] { "Afrikai vagy ázsiai?", "100 km/h", "10 km/h", "100 m/s" });
-            Fields.Add(new FieldViewModel(f22, questionViewHandler));
+            Fields.Add(new FieldViewModel(f22, this, questionViewHandler));
 
-            Fields.Add(new FieldViewModel(new Field { X = 2, Y = 3, Reward = 2000, Message = "Nagy Nyeremény!" }, questionViewHandler));
+            Fields.Add(new FieldViewModel(new Field { X = 2, Y = 3, Reward = 2000, Message = "Nagy Nyeremény!" }, this, questionViewHandler));
 
             #endregion ------------------ Ez a rész csak be van égetve. Élesben majd valami file-ból jöhetne ---------------
+
+            SelectedField = Fields[0];
         }
 
         public ObservableCollection<FieldViewModel> Fields { get; }
+
+        public FieldViewModel SelectedField
+        {
+            get { return mySelectedField; }
+            set
+            {
+                mySelectedField = value;
+                RaisePropertyChanged("SelectedField");
+            }
+        }
+
+        private FieldViewModel mySelectedField;
     }
 }

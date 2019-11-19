@@ -10,15 +10,19 @@ namespace miniQuizLight.ViewModel
 {
     public class FieldViewModel : ViewModelBase
     {
-        public FieldViewModel(Field field, IQuestionViewHandler questionViewHandler)
+        public FieldViewModel(Field field, MainViewModel parent, IQuestionViewHandler questionViewHandler)
         {
             CanShow = false;
             myField = field;
+            myParent = parent;
             myquestionViewHandler = questionViewHandler;
             ShowMessageCommand = new RelayCommand(ShowMessage);
+            RetryCommand = new RelayCommand(Retry);
         }
 
         public ICommand ShowMessageCommand { get; set; }
+
+        public ICommand RetryCommand { get; set; }
 
         public string Message
         {
@@ -54,11 +58,14 @@ namespace miniQuizLight.ViewModel
 
         private Field myField;
 
+        private MainViewModel myParent;
+
         private IQuestionViewHandler myquestionViewHandler;
 
         private void ShowMessage()
         {
-            if (myField.Questions.Count > 0)
+            myParent.SelectedField = this;
+            if (!CanShow && myField.Questions.Count > 0)
             {
                 bool success = true;
                 foreach (Question question in myField.Questions)
@@ -84,5 +91,12 @@ namespace miniQuizLight.ViewModel
                 RaisePropertyChanged("Message");
             }
         }
+
+        private void Retry()
+        {
+            CanShow = false;
+            RaisePropertyChanged("Message");
+        }
+
     }
 }
